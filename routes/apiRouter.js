@@ -3,12 +3,13 @@ const apiRouter = Router()
 let helpers = require('../config/helpers.js')
 
 let User = require('../db/schema.js').User
+let Dish = require('../db/schema.js').Dish
 
-  
+
   apiRouter
     .get('/users', function(req, res){
       User.find(req.query , "-password", function(err, results){
-        if(err) return res.json(err) 
+        if(err) return res.json(err)
         res.json(results)
       })
     })
@@ -16,7 +17,7 @@ let User = require('../db/schema.js').User
   apiRouter
     .get('/users/:_id', function(req, res){
       User.findById(req.params._id, "-password", function(err, record){
-        if(err || !record ) return res.json(err) 
+        if(err || !record ) return res.json(err)
         res.json(record)
       })
     })
@@ -25,7 +26,7 @@ let User = require('../db/schema.js').User
         if(err || !record) return res.json(err)
         let recordWithUpdates = helpers.updateFields(record, req.body)
         recordWithUpdates.save(function(err){
-          if(err) return res.json(err) 
+          if(err) return res.json(err)
           res.json(recordWithUpdates)
         })
       })
@@ -37,10 +38,45 @@ let User = require('../db/schema.js').User
           msg: `record ${req.params._id} successfully deleted`,
           _id: req.params._id
         })
-      })  
+      })
     })
 
     // Routes for a Model(resource) should have this structure
+
+
+    apiRouter.post('/dishes', function(req, res){
+        let dish = new Dish(request.body)
+        dish.save(function(err){
+            if(err){
+                    response.send(err)
+                }
+                else{
+                    response.json(dish)
+                }
+            })
+    })
+
+    apiRouter.get('/dishes', function(req, err){
+        Dish.find(req.query, function(err, records){
+            if(err){
+                response.send(err)
+            }
+            else{
+                response.json(records)
+            }
+        })
+    })
+
+    apiRouter.get('/user/dishes', function(err, req){
+        Dish.find({authorId: request.user._id}, function(err, records){
+            if (err){
+                response.send(err)
+            }
+            else{
+                response.json(records)
+            }
+        })
+    })
 
 
 module.exports = apiRouter
