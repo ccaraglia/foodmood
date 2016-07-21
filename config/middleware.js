@@ -1,8 +1,6 @@
 const checkAuth = function(req, res, next){
   if(!req.user) {
-    res.status(500).send({
-      error: 'no user logged in'
-    })
+    res.status(400).send( 'no authenticated user for current session' )
   }
   else next()
 }
@@ -15,14 +13,14 @@ const errorHandler = function(err, req, res, next) {
 
 const cookifyUser = function(req,res,next) {
   if (req.user) {
-    res.cookie(process.env.npm_config_name + '_user',JSON.stringify(req.user))
-    res.cookie('tiy_full_stack_app_name',process.env.npm_config_name)
+    res.cookie(global.PROJECT_NAME + '_user',JSON.stringify(req.user))
+    res.cookie('tiy_full_stack_app_name', global.PROJECT_NAME)
     next()
   }
   else {
     console.log('no user')
-    res.cookie(process.env.npm_config_name + '_user','null')
-    res.cookie('tiy_full_stack_app_name',process.env.npm_config_name)
+    res.cookie(global.PROJECT_NAME + '_user','null')
+    res.cookie('tiy_full_stack_app_name', global.PROJECT_NAME)
     next()
   }
 }
