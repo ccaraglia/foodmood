@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ACTIONS from '../actions'
 import Header from './header'
@@ -15,6 +16,7 @@ const LoginView = React.createClass({
 })
 
 const RegisterBox = React.createClass({
+
     _handleRegister: function(evt) {
         evt.preventDefault()
         ACTIONS.registerUser({
@@ -29,7 +31,11 @@ const RegisterBox = React.createClass({
             <div className="loginBox register">
                 <form onSubmit={this._handleRegister} >
                     <h3>Register</h3>
+
                     <input type="text" name="userName" placeholder="enter your name" />
+
+                    <input name = 'userName' placeholder = 'please enter your name' /> {/* ADDED ONE INPUT*/}
+
                     <input type="email" name="email" placeholder="enter your email" />
                     <input type="password" name="password" placeholder="enter a password" />
                     <button type="submit">sign up!</button>

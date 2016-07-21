@@ -17,13 +17,16 @@ const usersSchema = new Schema({
 
 })
 
+
 const dishSchema = new Schema({
     description: {type: String, required: true},
     rating: {type: Number},
+
     likes: {type: Number, default: 0},
     location: {type: String, required: true},
     title: {type: String, required: true},
     authorEmail: {type: String, required: true},
+
     authorId: {type: String, required: true},
     imageUrl: {type: String, required: true},
     tags: {type: [String]}
@@ -35,4 +38,5 @@ const dishSchema = new Schema({
 module.exports = {
   User: createModel('User', usersSchema),
   Dish: createModel('Dish', dishSchema)
+
 }

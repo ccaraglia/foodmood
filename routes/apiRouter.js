@@ -3,7 +3,9 @@ const apiRouter = Router()
 let helpers = require('../config/helpers.js')
 
 let User = require('../db/schema.js').User
+
 let Dish = require('../db/schema.js').Dish
+
 
 
   apiRouter
@@ -42,6 +44,46 @@ let Dish = require('../db/schema.js').Dish
     })
 
     // Routes for a Model(resource) should have this structure
+
+//STEP FOUR (build your server side apiroutes)
+
+//this route will create a brand new dish that we will put in the db
+apiRouter.post('/dishes', function(request, response) {
+    let dish = new Dish(request.body) //create new instance of schema from a MONGOOSE model, request.body is all the information that we have taken from the client side and we send it on the body of the request to the server
+    dish.save(function(error) { //saves to db
+        if(error) {
+            response.send(error)
+        }
+        else {
+            response.json(dish)
+        }
+    })
+})
+
+//this route will show us all the dishes posted by all users
+apiRouter.get('/dishes', function(request, response) {
+    Dish.find(request.query, function(error, records){  //some methods live directly on the model, so you don't need to create a new instance.
+    // request.query parses the parameters and turns them into an object (at this moment we have it just in case)
+        if(error) {
+            response.send(error)
+        }
+        else {
+            response.json(records)
+        }
+    })
+})
+
+//get dishes posted by the logged in user
+apiRouter.get('/user/dishes', function(request, response) {
+    Dish.find({authorId: request.user._id}, function(error, records) { //I want to get all dishes where the author id matches the current id of the user
+        if(error) {
+            response.send(error)
+        }
+        else {
+            response.json(records)
+        }
+    })
+})
 
 
     apiRouter.post('/dishes', function(req, res){

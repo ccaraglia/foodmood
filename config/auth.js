@@ -11,14 +11,14 @@ module.exports = function(UserModel){
   let onLogin = function(inputUser, inputPW, done){
       UserModel.findOne({"email": inputUser}, function(err, results){
         console.log('running onlogin')
-        if(err || !results){  
+        if(err || !results){
           //will trigger failure callback
-          done(null , false, {message: "no user exists with that email"})   
+          done(null , false, {message: "no user exists with that email"})
         } else if(results.password !== inputPW) {
           //will trigger failure callback
-          done(null, false, {message: "bad password"} )      
+          done(null, false, {message: "bad password"} )
         } else {
-          done(null, results); 
+          done(null, results);
           //calls req.login(results)
         }
     })
@@ -36,6 +36,6 @@ module.exports = function(UserModel){
   })
 
 
-  passport.use( new LocalStrategy(authFields, onLogin) ) 
+  passport.use( new LocalStrategy(authFields, onLogin) )
 }
 
