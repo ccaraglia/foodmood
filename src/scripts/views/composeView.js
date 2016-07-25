@@ -34,15 +34,24 @@ description: {type: String, required: true},
 
 const DishPostingForm = React.createClass({
 
+    getInitialState: function(){
+        return {
+            currentDishRating: 0
+
+        }
+
+    },
+
     _handleCompose: function(e){
         e.preventDefault()
         ACTIONS.saveDish({
             title: e.currentTarget.title.value,
             description: e.currentTarget.description.value,
             location: e.currentTarget.location.value,
-            rating: e.currentTarget.rating.value,
+            rating: this.state.currentDishRating,
             authorId: User.getCurrentUser()._id,
             authorEmail: User.getCurrentUser().email,
+            tags: e.currentTarget.tags.value.split(','),
             imageUrl: this.url ? this.url : "empty.plate.jpg"
 
         })
@@ -51,7 +60,29 @@ const DishPostingForm = React.createClass({
     _handleImage: function(result){
         console.log(result.url)
         this.url = result.url
+    },
 
+
+    _handleStar: function(evt){
+        this.setState({
+            currentDishRating:parseInt(evt.target.dataset.rating)
+        })
+
+    },
+
+    _generateStarsJsx: function(ratingVal){
+        var JsxStars = []
+        for (var i=1; i<=5; i++){
+            let starStyle = {fontSize : 30}
+            if(i <= ratingVal){
+                starStyle.color = 'yellow'
+
+
+            }
+            let JsxStar = <span style={starStyle} data-rating={i} onClick={this._handleStar}>&#9734;</span>
+            JsxStars.push(JsxStar)
+        }
+        return JsxStars
 
     },
 
@@ -63,7 +94,8 @@ const DishPostingForm = React.createClass({
                     <input type="text" name="title" placeholder="Enter the dish title"/>
                     <textarea type="text" name="description" placeholder="Enter the description"></textarea>
                     <input type="text" name="location" placeholder="Enter the location"/>
-                    <input type="text" name="rating" />
+                    {this._generateStarsJsx(this.state.currentDishRating)}
+                    <input type="text" name="tags" placeholder="Enter the tags"/>
                     <ReactFilepicker apikey="As5zYYoX5Rue7kPqcGGvcz" onSuccess={this._handleImage}/>
                     <button type="submit">SUBMIT</button>
 

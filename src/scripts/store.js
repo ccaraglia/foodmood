@@ -18,6 +18,15 @@ const DISH_STORE = _.extend(Backbone.Events, {
         return _.clone(this.data)
     },
 
+    setStore: function(storeProp, payload){
+        if( typeof this.data[storeProp] === 'undefined'){
+            throw Error(`${storeProp} prop not on store`)
+        }
+        this.data[storeProp] = payload
+        this.emitChange
+
+    },
+
     initialize: function(){
         this.data.collection.on('sync update', this.emitChange.bind(this))
     }

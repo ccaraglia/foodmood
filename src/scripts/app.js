@@ -29,7 +29,7 @@ var AppRouter = Backbone.Router.extend({
          ReactDOM.render(<ComposeView />, document.querySelector('.container'))
     },
     myDishesHandler: function(){
-        ReactDOM.render(<DishesView />, document.querySelector('.container'))
+        ReactDOM.render(<Dashboard />, document.querySelector('.container'))
     },
     loginHandler: function(){
         ReactDOM.render(<LoginView />, document.querySelector('.container'))

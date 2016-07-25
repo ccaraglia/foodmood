@@ -1,5 +1,5 @@
 
-import {User, DishModel} from './models/models'
+import {User, DishModel, DishCollection} from './models/models'
 import DISH_STORE from './store'
 import toastr from 'toastr'
 
@@ -63,9 +63,25 @@ const ACTIONS = {
 
     },
 
-    fetchDishes: function(){
+    fetchDishes: function(tags){
 
+        DISH_STORE.data.collection.fetch({
+
+            data: {
+                tags:tags
+            }
+        })
+    },
+
+    likeDish: function(dish, userObj){
+        console.log(dish.get('likes'))
+ //       dish.get('likes').push(userObj._id)
+        dish.set({
+            likes: dish.get('likes').concat(userObj._id)
+        })
+        dish.save()
         DISH_STORE.data.collection.fetch()
+
     }
 
 }
